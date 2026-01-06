@@ -3,124 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Three Double Streets Tracker</title>
+    <title>Double Streets Tracker</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', system-ui, sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: #e6e6e6;
+            background: #0d1b2a;
+            color: #e0e1dd;
             min-height: 100vh;
-            padding: 20px;
+            padding: 10px;
+            -webkit-tap-highlight-color: transparent;
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 100%;
             margin: 0 auto;
         }
         
         header {
             text-align: center;
-            padding: 20px 0;
-            border-bottom: 2px solid #0f3460;
-            margin-bottom: 30px;
+            padding: 15px 0;
+            margin-bottom: 15px;
         }
         
         h1 {
-            font-size: 2.8rem;
+            font-size: 1.8rem;
             color: #4cc9f0;
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
         
         .subtitle {
-            font-size: 1.2rem;
-            color: #b8c1ec;
-            max-width: 800px;
-            margin: 0 auto;
-            line-height: 1.5;
+            font-size: 0.9rem;
+            color: #8d99ae;
+            line-height: 1.3;
         }
         
-        .main-content {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-        
-        .panel {
-            background: rgba(15, 52, 96, 0.7);
+        .results-section {
+            background: rgba(13, 27, 42, 0.9);
             border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-            flex: 1;
-            min-width: 300px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 2px solid #1b4965;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
         
-        .panel h2 {
+        .section-title {
             color: #72efdd;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+            text-align: center;
             border-bottom: 1px solid #4361ee;
-            font-size: 1.8rem;
+            padding-bottom: 5px;
         }
         
-        .input-section {
-            margin-bottom: 25px;
+        .missing-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
         }
         
-        .input-label {
-            display: block;
-            margin-bottom: 8px;
-            color: #b8c1ec;
+        .missing-box {
+            background: linear-gradient(145deg, #f72585, #b5179e);
+            border-radius: 10px;
+            padding: 18px 12px;
+            min-width: 85px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(247, 37, 133, 0.4);
+        }
+        
+        .ds-number {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 3px;
+        }
+        
+        .ds-label {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.95);
             font-weight: 600;
         }
         
+        .remaining-container {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .remaining-box {
+            background: rgba(27, 38, 59, 0.9);
+            border-radius: 8px;
+            padding: 15px 10px;
+            min-width: 70px;
+            text-align: center;
+            border: 2px solid #4361ee;
+        }
+        
+        .remaining-number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #4cc9f0;
+            margin-bottom: 3px;
+        }
+        
+        .remaining-label {
+            font-size: 0.85rem;
+            color: #b8c1ec;
+        }
+        
+        .input-section {
+            background: rgba(13, 27, 42, 0.9);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 2px solid #1b4965;
+        }
+        
+        .input-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
         .initial-input {
-            width: 100%;
-            padding: 14px;
+            flex: 1;
+            padding: 12px;
             border-radius: 8px;
             border: 2px solid #4361ee;
-            background: #0f3460;
+            background: #1b263b;
             color: white;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
         
-        .initial-input::placeholder {
-            color: #8a9bb2;
+        .action-btn {
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+            font-size: 1rem;
+            white-space: nowrap;
         }
         
-        .buttons-section {
-            margin-top: 25px;
+        .action-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .load-btn {
+            background: #4361ee;
+            color: white;
+        }
+        
+        .clear-btn {
+            background: #f72585;
+            color: white;
+        }
+        
+        .number-pad {
+            background: rgba(13, 27, 42, 0.9);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 2px solid #1b4965;
         }
         
         .number-grid {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
+            gap: 8px;
         }
         
         .number-btn {
-            padding: 18px 5px;
-            font-size: 1.3rem;
+            aspect-ratio: 1;
+            font-size: 1.2rem;
             font-weight: bold;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            background: #3a0ca3;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: white;
         }
         
-        .number-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        .number-btn:active {
+            transform: scale(0.9);
         }
         
         .number-btn.zero {
@@ -128,263 +205,132 @@
         }
         
         .number-btn.even {
-            background: #4361ee;
+            background: #3a0ca3;
         }
         
         .number-btn.odd {
-            background: #3a0ca3;
+            background: #4361ee;
         }
         
         .number-btn.clicked {
             background: #f72585;
-            transform: scale(0.95);
         }
         
-        .action-buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .action-btn {
-            flex: 1;
-            padding: 16px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .load-btn {
-            background: linear-gradient(to right, #4cc9f0, #4361ee);
-            color: white;
-        }
-        
-        .clear-btn {
-            background: linear-gradient(to right, #f72585, #b5179e);
-            color: white;
-        }
-        
-        .action-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        .results-section {
-            margin-top: 20px;
-        }
-        
-        .results-title {
-            color: #72efdd;
-            margin-bottom: 15px;
-            font-size: 1.5rem;
+        .history-section {
+            background: rgba(13, 27, 42, 0.9);
+            border-radius: 12px;
+            padding: 15px;
+            border: 2px solid #1b4965;
         }
         
         .history-list {
-            background: rgba(10, 25, 47, 0.8);
+            background: rgba(27, 38, 59, 0.8);
             border-radius: 8px;
-            padding: 15px;
-            min-height: 100px;
-            max-height: 200px;
+            padding: 12px;
+            min-height: 60px;
+            max-height: 120px;
             overflow-y: auto;
-            margin-bottom: 20px;
-            border: 1px solid #0f3460;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
         }
         
         .history-item {
-            display: inline-block;
             background: #4361ee;
-            padding: 8px 12px;
-            margin: 5px;
+            padding: 6px 10px;
             border-radius: 6px;
             font-weight: bold;
-        }
-        
-        .results-container {
-            margin-top: 30px;
-        }
-        
-        .missing-section {
-            margin-bottom: 30px;
-        }
-        
-        .section-title {
-            color: #72efdd;
-            margin-bottom: 15px;
-            font-size: 1.5rem;
-        }
-        
-        .missing-ds-display {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-        
-        .ds-missing-item {
-            background: linear-gradient(to bottom right, #f72585, #b5179e);
-            border-radius: 10px;
-            padding: 25px 20px;
-            min-width: 120px;
-            text-align: center;
-            box-shadow: 0 8px 20px rgba(247, 37, 133, 0.3);
-        }
-        
-        .ds-missing-number {
-            font-size: 2.8rem;
-            font-weight: bold;
-            color: white;
-            margin-bottom: 5px;
-        }
-        
-        .ds-missing-label {
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.9);
-            font-weight: 600;
-        }
-        
-        .remaining-section {
-            margin-top: 40px;
-        }
-        
-        .remaining-ds-display {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            flex-wrap: wrap;
-        }
-        
-        .ds-remaining-item {
-            background: rgba(10, 25, 47, 0.9);
-            border-radius: 10px;
-            padding: 20px 15px;
-            min-width: 110px;
-            text-align: center;
-            border: 2px solid #4cc9f0;
-        }
-        
-        .ds-remaining-number {
-            font-size: 2.2rem;
-            font-weight: bold;
-            color: #4cc9f0;
-            margin-bottom: 5px;
-        }
-        
-        .ds-remaining-label {
-            font-size: 1rem;
-            color: #b8c1ec;
-            font-weight: 600;
-        }
-        
-        .ds-numbers-display {
-            margin-top: 15px;
             font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 5px;
-        }
-        
-        .ds-number {
-            background: rgba(67, 97, 238, 0.3);
-            padding: 3px 8px;
-            border-radius: 4px;
         }
         
         .empty-state {
             text-align: center;
-            color: #8a9bb2;
+            color: #8d99ae;
             font-style: italic;
-            padding: 40px 20px;
-            grid-column: 1 / -1;
-        }
-        
-        .instructions {
-            background: rgba(15, 52, 96, 0.5);
-            border-radius: 10px;
             padding: 20px;
-            margin-top: 40px;
-            border-left: 5px solid #4cc9f0;
+            width: 100%;
         }
         
-        .instructions h3 {
+        .info-box {
+            background: rgba(13, 27, 42, 0.9);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 2px solid #1b4965;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+        
+        .info-title {
             color: #72efdd;
-            margin-bottom: 15px;
+            margin-bottom: 8px;
+            font-size: 1rem;
         }
         
-        .instructions ol {
-            padding-left: 20px;
-            line-height: 1.6;
+        .ds-explanation {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
         }
         
-        .instructions li {
-            margin-bottom: 10px;
+        .ds-item {
+            background: rgba(27, 38, 59, 0.8);
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            text-align: center;
         }
         
-        @media (max-width: 768px) {
-            .missing-ds-display {
-                gap: 20px;
-            }
-            
-            .ds-missing-item {
-                min-width: 100px;
-                padding: 20px 15px;
-            }
-            
-            .ds-missing-number {
-                font-size: 2.2rem;
-            }
-            
-            .remaining-ds-display {
-                gap: 15px;
-            }
-            
-            .ds-remaining-item {
-                min-width: 90px;
-                padding: 15px 10px;
+        .ds-name {
+            color: #4cc9f0;
+            font-weight: bold;
+        }
+        
+        .ds-range {
+            color: #b8c1ec;
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                max-width: 768px;
+                margin: 0 auto;
             }
             
             .number-grid {
-                grid-template-columns: repeat(4, 1fr);
+                grid-template-columns: repeat(12, 1fr);
+                gap: 10px;
+            }
+            
+            .ds-explanation {
+                grid-template-columns: repeat(3, 1fr);
             }
         }
         
         @media (max-width: 480px) {
-            .missing-ds-display {
-                gap: 15px;
+            .number-grid {
+                grid-template-columns: repeat(4, 1fr);
             }
             
-            .ds-missing-item {
-                min-width: 80px;
-                padding: 15px 10px;
+            .missing-box {
+                min-width: 70px;
+                padding: 15px 8px;
             }
             
-            .ds-missing-number {
+            .ds-number {
                 font-size: 1.8rem;
             }
             
-            .remaining-ds-display {
-                gap: 10px;
-            }
-            
-            .ds-remaining-item {
-                min-width: 70px;
+            .remaining-box {
+                min-width: 60px;
                 padding: 12px 8px;
             }
             
-            .ds-remaining-number {
-                font-size: 1.8rem;
+            .remaining-number {
+                font-size: 1.5rem;
             }
             
-            .number-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            
-            .action-buttons {
+            .input-row {
                 flex-direction: column;
             }
         }
@@ -393,67 +339,48 @@
 <body>
     <div class="container">
         <header>
-            <h1>Three Double Streets Tracker</h1>
-            <p class="subtitle">Click numbers (0-36) to automatically track which 3 double streets have been missing the longest. Results update automatically.</p>
+            <h1>Double Streets Tracker</h1>
+            <p class="subtitle">Click numbers (0-36) to see missing double streets</p>
         </header>
         
-        <div class="main-content">
-            <div class="panel">
-                <h2>Enter Numbers</h2>
-                
-                <div class="input-section">
-                    <label class="input-label">Initial Results (comma separated):</label>
-                    <input type="text" id="initialInput" class="initial-input" placeholder="Example: 12, 5, 23, 0, 31">
-                    <div class="action-buttons">
-                        <button id="loadInitialBtn" class="action-btn load-btn">Load Initial Numbers</button>
-                        <button id="clearBtn" class="action-btn clear-btn">Clear All</button>
-                    </div>
-                </div>
-                
-                <div class="buttons-section">
-                    <label class="input-label">Click numbers below (0-36):</label>
-                    <div class="number-grid" id="numberGrid">
-                        <!-- Numbers will be generated by JavaScript -->
-                    </div>
-                </div>
-                
-                <div class="results-section">
-                    <h3 class="results-title">Number History</h3>
-                    <div class="history-list" id="historyList">
-                        <div class="empty-state">No numbers entered yet. Enter numbers using the buttons or the input field above.</div>
-                    </div>
-                </div>
+        <div class="results-section">
+            <div class="section-title">Missing Double Streets</div>
+            <div class="missing-container" id="missingContainer">
+                <div class="empty-state">Click numbers to see results</div>
             </div>
             
-            <div class="panel">
-                <h2>Results</h2>
-                <div class="results-container">
-                    <div class="missing-section">
-                        <h3 class="section-title">3 Missing Double Streets</h3>
-                        <div class="missing-ds-display" id="missingDsDisplay">
-                            <div class="empty-state">Click numbers to see missing double streets</div>
-                        </div>
-                    </div>
-                    
-                    <div class="remaining-section">
-                        <h3 class="section-title">Remaining Double Streets</h3>
-                        <div class="remaining-ds-display" id="remainingDsDisplay">
-                            <div class="empty-state">Results will appear here</div>
-                        </div>
-                    </div>
-                </div>
+            <div class="section-title">Remaining Double Streets</div>
+            <div class="remaining-container" id="remainingContainer">
+                <div class="empty-state">Results will appear here</div>
             </div>
         </div>
         
-        <div class="instructions">
-            <h3>How to Use This Tool</h3>
-            <ol>
-                <li><strong>Enter initial numbers:</strong> Type comma-separated numbers (0-36) in the input field and click "Load Initial Numbers" OR click individual number buttons.</li>
-                <li><strong>Results update automatically:</strong> As you click numbers, the tool automatically calculates and displays the 3 double streets missing the longest.</li>
-                <li><strong>Double streets:</strong> DS1: 1-6, DS2: 7-12, DS3: 13-18, DS4: 19-24, DS5: 25-30, DS6: 31-36. Number 0 doesn't belong to any double street.</li>
-                <li><strong>Clear history:</strong> Use "Clear All" to reset the history and start over.</li>
-                <li><strong>Missing double streets:</strong> Shows the 3 double streets that haven't appeared for the longest time in your number history.</li>
-            </ol>
+        <div class="input-section">
+            <div class="input-row">
+                <input type="text" id="initialInput" class="initial-input" placeholder="Enter numbers: 12,5,23,0,31">
+                <button id="loadInitialBtn" class="action-btn load-btn">Load</button>
+                <button id="clearBtn" class="action-btn clear-btn">Clear</button>
+            </div>
+        </div>
+        
+        <div class="number-pad">
+            <div class="section-title">Click Numbers</div>
+            <div class="number-grid" id="numberGrid">
+                <!-- Numbers will be generated by JavaScript -->
+            </div>
+        </div>
+        
+        <div class="history-section">
+            <div class="section-title">Number History</div>
+            <div class="history-list" id="historyList">
+                <div class="empty-state">No numbers entered yet</div>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <div class="info-title">Double Streets Info</div>
+            <p>DS1: 1-6, DS2: 7-12, DS3: 13-18, DS4: 19-24, DS5: 25-30, DS6: 31-36</p>
+            <p>The tool shows the 3 double streets that have been missing the longest.</p>
         </div>
     </div>
 
@@ -534,7 +461,7 @@
             const historyList = document.getElementById('historyList');
             
             if (history.length === 0) {
-                historyList.innerHTML = '<div class="empty-state">No numbers entered yet. Enter numbers using the buttons or the input field above.</div>';
+                historyList.innerHTML = '<div class="empty-state">No numbers entered yet</div>';
                 return;
             }
             
@@ -594,8 +521,6 @@
             }
             
             // Always show exactly 3 double streets
-            // If we have more than 3 missing, take the first 3
-            // If we have less than 3 missing, add the ones seen the longest ago
             if (missingDS.length > 3) {
                 missingDS = missingDS.slice(0, 3);
             } else if (missingDS.length < 3) {
@@ -641,46 +566,42 @@
         // Update the results display
         function updateResults() {
             const result = findMissingDoubleStreets();
-            const missingDsDisplay = document.getElementById('missingDsDisplay');
-            const remainingDsDisplay = document.getElementById('remainingDsDisplay');
+            const missingContainer = document.getElementById('missingContainer');
+            const remainingContainer = document.getElementById('remainingContainer');
             
             // Display missing double streets
             if (result.missing.length === 0) {
-                missingDsDisplay.innerHTML = '<div class="empty-state">No missing double streets found.</div>';
+                missingContainer.innerHTML = '<div class="empty-state">No missing double streets</div>';
             } else {
                 let missingHTML = '';
                 result.missing.forEach(dsIndex => {
                     const ordinal = getOrdinal(dsIndex + 1);
                     missingHTML += `
-                        <div class="ds-missing-item">
-                            <div class="ds-missing-number">${dsIndex + 1}</div>
-                            <div class="ds-missing-label">${ordinal}</div>
+                        <div class="missing-box">
+                            <div class="ds-number">${dsIndex + 1}</div>
+                            <div class="ds-label">${ordinal}</div>
                         </div>
                     `;
                 });
-                missingDsDisplay.innerHTML = missingHTML;
+                missingContainer.innerHTML = missingHTML;
             }
             
             // Display remaining double streets
             if (result.remaining.length === 0) {
-                remainingDsDisplay.innerHTML = '<div class="empty-state">No remaining double streets.</div>';
+                remainingContainer.innerHTML = '<div class="empty-state">No remaining double streets</div>';
             } else {
                 let remainingHTML = '';
                 result.remaining.forEach(dsIndex => {
                     const ordinal = getOrdinal(dsIndex + 1);
-                    const numbers = DOUBLE_STREETS[dsIndex];
                     
                     remainingHTML += `
-                        <div class="ds-remaining-item">
-                            <div class="ds-remaining-number">${dsIndex + 1}</div>
-                            <div class="ds-remaining-label">${ordinal}</div>
-                            <div class="ds-numbers-display">
-                                ${numbers.map(num => `<span class="ds-number">${num}</span>`).join('')}
-                            </div>
+                        <div class="remaining-box">
+                            <div class="remaining-number">${dsIndex + 1}</div>
+                            <div class="remaining-label">${ordinal}</div>
                         </div>
                     `;
                 });
-                remainingDsDisplay.innerHTML = remainingHTML;
+                remainingContainer.innerHTML = remainingHTML;
             }
         }
 
@@ -709,10 +630,10 @@
             
             // Load sample data for demonstration
             setTimeout(() => {
-                history = [12, 5, 23, 0, 31, 17, 8, 14, 36, 2];
+                history = [12, 5, 23, 31, 17, 8, 14, 36, 2];
                 updateHistoryDisplay();
                 updateResults();
-            }, 500);
+            }, 300);
         }
 
         // Initialize when page loads
