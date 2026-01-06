@@ -157,7 +157,7 @@
             transition: all 0.2s ease;
         }
         
-        .calculate-btn {
+        .load-btn {
             background: linear-gradient(to right, #4cc9f0, #4361ee);
             color: white;
         }
@@ -202,54 +202,97 @@
             font-weight: bold;
         }
         
-        .missing-section {
+        .results-container {
             margin-top: 30px;
         }
         
-        .missing-title {
+        .missing-section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
             color: #72efdd;
             margin-bottom: 15px;
             font-size: 1.5rem;
         }
         
-        .ds-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+        .missing-ds-display {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
         }
         
-        .ds-box {
+        .ds-missing-item {
+            background: linear-gradient(to bottom right, #f72585, #b5179e);
+            border-radius: 10px;
+            padding: 25px 20px;
+            min-width: 120px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(247, 37, 133, 0.3);
+        }
+        
+        .ds-missing-number {
+            font-size: 2.8rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 5px;
+        }
+        
+        .ds-missing-label {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+        }
+        
+        .remaining-section {
+            margin-top: 40px;
+        }
+        
+        .remaining-ds-display {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .ds-remaining-item {
             background: rgba(10, 25, 47, 0.9);
             border-radius: 10px;
-            padding: 20px;
-            border: 2px solid #4cc9f0;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .ds-header {
-            font-size: 1.6rem;
-            color: #f72585;
-            margin-bottom: 12px;
+            padding: 20px 15px;
+            min-width: 110px;
             text-align: center;
+            border: 2px solid #4cc9f0;
         }
         
-        .ds-numbers {
+        .ds-remaining-number {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #4cc9f0;
+            margin-bottom: 5px;
+        }
+        
+        .ds-remaining-label {
+            font-size: 1rem;
+            color: #b8c1ec;
+            font-weight: 600;
+        }
+        
+        .ds-numbers-display {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
             justify-content: center;
+            gap: 5px;
         }
         
         .ds-number {
-            background: #3a0ca3;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 1.2rem;
+            background: rgba(67, 97, 238, 0.3);
+            padding: 3px 8px;
+            border-radius: 4px;
         }
         
         .empty-state {
@@ -283,8 +326,26 @@
         }
         
         @media (max-width: 768px) {
-            .ds-container {
-                grid-template-columns: repeat(2, 1fr);
+            .missing-ds-display {
+                gap: 20px;
+            }
+            
+            .ds-missing-item {
+                min-width: 100px;
+                padding: 20px 15px;
+            }
+            
+            .ds-missing-number {
+                font-size: 2.2rem;
+            }
+            
+            .remaining-ds-display {
+                gap: 15px;
+            }
+            
+            .ds-remaining-item {
+                min-width: 90px;
+                padding: 15px 10px;
             }
             
             .number-grid {
@@ -293,8 +354,30 @@
         }
         
         @media (max-width: 480px) {
-            .ds-container {
-                grid-template-columns: 1fr;
+            .missing-ds-display {
+                gap: 15px;
+            }
+            
+            .ds-missing-item {
+                min-width: 80px;
+                padding: 15px 10px;
+            }
+            
+            .ds-missing-number {
+                font-size: 1.8rem;
+            }
+            
+            .remaining-ds-display {
+                gap: 10px;
+            }
+            
+            .ds-remaining-item {
+                min-width: 70px;
+                padding: 12px 8px;
+            }
+            
+            .ds-remaining-number {
+                font-size: 1.8rem;
             }
             
             .number-grid {
@@ -311,7 +394,7 @@
     <div class="container">
         <header>
             <h1>Three Double Streets Tracker</h1>
-            <p class="subtitle">Enter roulette numbers (0-36) to identify the 3 double streets that have been missing the longest. Double streets are groups of 6 consecutive numbers (1-6, 7-12, 13-18, 19-24, 25-30, 31-36).</p>
+            <p class="subtitle">Click numbers (0-36) to automatically track which 3 double streets have been missing the longest. Results update automatically.</p>
         </header>
         
         <div class="main-content">
@@ -321,18 +404,16 @@
                 <div class="input-section">
                     <label class="input-label">Initial Results (comma separated):</label>
                     <input type="text" id="initialInput" class="initial-input" placeholder="Example: 12, 5, 23, 0, 31">
-                    <button id="loadInitialBtn" class="action-btn calculate-btn" style="margin-top: 15px; width: 100%;">Load Initial Numbers</button>
+                    <div class="action-buttons">
+                        <button id="loadInitialBtn" class="action-btn load-btn">Load Initial Numbers</button>
+                        <button id="clearBtn" class="action-btn clear-btn">Clear All</button>
+                    </div>
                 </div>
                 
                 <div class="buttons-section">
-                    <label class="input-label">Or click numbers below:</label>
+                    <label class="input-label">Click numbers below (0-36):</label>
                     <div class="number-grid" id="numberGrid">
                         <!-- Numbers will be generated by JavaScript -->
-                    </div>
-                    
-                    <div class="action-buttons">
-                        <button id="calculateBtn" class="action-btn calculate-btn">Calculate Missing Double Streets</button>
-                        <button id="clearBtn" class="action-btn clear-btn">Clear All</button>
                     </div>
                 </div>
                 
@@ -345,11 +426,20 @@
             </div>
             
             <div class="panel">
-                <h2>Missing Double Streets</h2>
-                <div class="missing-section">
-                    <h3 class="missing-title">3 Longest Missing Double Streets:</h3>
-                    <div class="ds-container" id="dsContainer">
-                        <div class="empty-state">Click "Calculate Missing Double Streets" to see results</div>
+                <h2>Results</h2>
+                <div class="results-container">
+                    <div class="missing-section">
+                        <h3 class="section-title">3 Missing Double Streets</h3>
+                        <div class="missing-ds-display" id="missingDsDisplay">
+                            <div class="empty-state">Click numbers to see missing double streets</div>
+                        </div>
+                    </div>
+                    
+                    <div class="remaining-section">
+                        <h3 class="section-title">Remaining Double Streets</h3>
+                        <div class="remaining-ds-display" id="remainingDsDisplay">
+                            <div class="empty-state">Results will appear here</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -358,11 +448,11 @@
         <div class="instructions">
             <h3>How to Use This Tool</h3>
             <ol>
-                <li><strong>Enter initial numbers:</strong> You can either type comma-separated numbers (0-36) in the input field and click "Load Initial Numbers" OR click individual number buttons.</li>
-                <li><strong>Add more numbers:</strong> Continue clicking number buttons to add them to the history.</li>
-                <li><strong>Calculate missing double streets:</strong> Click "Calculate Missing Double Streets" to identify the 3 double streets that have been missing the longest.</li>
+                <li><strong>Enter initial numbers:</strong> Type comma-separated numbers (0-36) in the input field and click "Load Initial Numbers" OR click individual number buttons.</li>
+                <li><strong>Results update automatically:</strong> As you click numbers, the tool automatically calculates and displays the 3 double streets missing the longest.</li>
+                <li><strong>Double streets:</strong> DS1: 1-6, DS2: 7-12, DS3: 13-18, DS4: 19-24, DS5: 25-30, DS6: 31-36. Number 0 doesn't belong to any double street.</li>
                 <li><strong>Clear history:</strong> Use "Clear All" to reset the history and start over.</li>
-                <li><strong>Double streets explained:</strong> DS1: 1-6, DS2: 7-12, DS3: 13-18, DS4: 19-24, DS5: 25-30, DS6: 31-36. Number 0 doesn't belong to any double street.</li>
+                <li><strong>Missing double streets:</strong> Shows the 3 double streets that haven't appeared for the longest time in your number history.</li>
             </ol>
         </div>
     </div>
@@ -403,10 +493,11 @@
             }
         }
 
-        // Add a number to history
+        // Add a number to history and update results
         function addNumber(number) {
             history.push(number);
             updateHistoryDisplay();
+            updateResults();
             
             // Visual feedback for clicked button
             const buttons = document.querySelectorAll('.number-btn');
@@ -434,6 +525,7 @@
             });
             
             updateHistoryDisplay();
+            updateResults();
             document.getElementById('initialInput').value = '';
         }
 
@@ -466,10 +558,9 @@
         }
 
         // Find the 3 double streets missing the longest
-        function calculateMissingDoubleStreets() {
+        function findMissingDoubleStreets() {
             if (history.length === 0) {
-                alert('Please enter some numbers first.');
-                return;
+                return { missing: [], remaining: [0, 1, 2, 3, 4, 5] };
             }
             
             // Initialize last seen indices with -1 (not seen)
@@ -486,7 +577,6 @@
                 }
                 
                 // Stop if we found at least 3 DS that have been seen
-                // (meaning the remaining ones are missing)
                 let seenCount = 0;
                 for (let j = 0; j < 6; j++) {
                     if (lastSeenDS[j] !== -1) seenCount++;
@@ -527,41 +617,78 @@
                 }
             }
             
-            displayMissingDoubleStreets(missingDS);
-        }
-
-        // Display the missing double streets
-        function displayMissingDoubleStreets(missingDS) {
-            const dsContainer = document.getElementById('dsContainer');
-            
-            if (missingDS.length === 0) {
-                dsContainer.innerHTML = '<div class="empty-state">No missing double streets found.</div>';
-                return;
+            // Find remaining double streets (all except the missing ones)
+            let remainingDS = [];
+            for (let ds = 0; ds < 6; ds++) {
+                if (!missingDS.includes(ds)) {
+                    remainingDS.push(ds);
+                }
             }
             
-            let dsHTML = '';
-            missingDS.forEach(dsIndex => {
-                const dsNumber = dsIndex + 1;
-                const numbers = DOUBLE_STREETS[dsIndex];
-                
-                dsHTML += `
-                    <div class="ds-box">
-                        <div class="ds-header">DS ${dsNumber}</div>
-                        <div class="ds-numbers">
-                            ${numbers.map(num => `<div class="ds-number">${num}</div>`).join('')}
-                        </div>
-                    </div>
-                `;
-            });
+            // Sort missing DS in ascending order
+            missingDS.sort((a, b) => a - b);
             
-            dsContainer.innerHTML = dsHTML;
+            return { missing: missingDS, remaining: remainingDS };
+        }
+
+        // Format ordinal numbers (1st, 2nd, 3rd, etc.)
+        function getOrdinal(n) {
+            const suffixes = ["th", "st", "nd", "rd"];
+            const v = n % 100;
+            return n + (suffixes[(v-20) % 10] || suffixes[v] || suffixes[0]);
+        }
+
+        // Update the results display
+        function updateResults() {
+            const result = findMissingDoubleStreets();
+            const missingDsDisplay = document.getElementById('missingDsDisplay');
+            const remainingDsDisplay = document.getElementById('remainingDsDisplay');
+            
+            // Display missing double streets
+            if (result.missing.length === 0) {
+                missingDsDisplay.innerHTML = '<div class="empty-state">No missing double streets found.</div>';
+            } else {
+                let missingHTML = '';
+                result.missing.forEach(dsIndex => {
+                    const ordinal = getOrdinal(dsIndex + 1);
+                    missingHTML += `
+                        <div class="ds-missing-item">
+                            <div class="ds-missing-number">${dsIndex + 1}</div>
+                            <div class="ds-missing-label">${ordinal}</div>
+                        </div>
+                    `;
+                });
+                missingDsDisplay.innerHTML = missingHTML;
+            }
+            
+            // Display remaining double streets
+            if (result.remaining.length === 0) {
+                remainingDsDisplay.innerHTML = '<div class="empty-state">No remaining double streets.</div>';
+            } else {
+                let remainingHTML = '';
+                result.remaining.forEach(dsIndex => {
+                    const ordinal = getOrdinal(dsIndex + 1);
+                    const numbers = DOUBLE_STREETS[dsIndex];
+                    
+                    remainingHTML += `
+                        <div class="ds-remaining-item">
+                            <div class="ds-remaining-number">${dsIndex + 1}</div>
+                            <div class="ds-remaining-label">${ordinal}</div>
+                            <div class="ds-numbers-display">
+                                ${numbers.map(num => `<span class="ds-number">${num}</span>`).join('')}
+                            </div>
+                        </div>
+                    `;
+                });
+                remainingDsDisplay.innerHTML = remainingHTML;
+            }
         }
 
         // Clear all history and results
         function clearAll() {
             history = [];
             updateHistoryDisplay();
-            document.getElementById('dsContainer').innerHTML = '<div class="empty-state">Click "Calculate Missing Double Streets" to see results</div>';
+            updateResults();
             document.getElementById('initialInput').value = '';
         }
 
@@ -571,7 +698,6 @@
             
             // Set up event listeners
             document.getElementById('loadInitialBtn').addEventListener('click', loadInitialNumbers);
-            document.getElementById('calculateBtn').addEventListener('click', calculateMissingDoubleStreets);
             document.getElementById('clearBtn').addEventListener('click', clearAll);
             
             // Allow Enter key to load initial numbers
@@ -585,7 +711,7 @@
             setTimeout(() => {
                 history = [12, 5, 23, 0, 31, 17, 8, 14, 36, 2];
                 updateHistoryDisplay();
-                calculateMissingDoubleStreets();
+                updateResults();
             }, 500);
         }
 
