@@ -17,30 +17,21 @@
             color: #e0e1dd;
             min-height: 100vh;
             padding: 10px;
-            -webkit-tap-highlight-color: transparent;
         }
         
         .container {
-            max-width: 100%;
+            max-width: 800px;
             margin: 0 auto;
         }
         
         header {
             text-align: center;
-            padding: 15px 0;
-            margin-bottom: 15px;
+            padding: 10px 0;
         }
         
         h1 {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             color: #4cc9f0;
-            margin-bottom: 5px;
-        }
-        
-        .subtitle {
-            font-size: 0.9rem;
-            color: #8d99ae;
-            line-height: 1.3;
         }
         
         .results-section {
@@ -49,215 +40,168 @@
             padding: 15px;
             margin-bottom: 15px;
             border: 2px solid #1b4965;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
         
         .section-title {
             color: #72efdd;
-            margin-bottom: 12px;
-            font-size: 1.2rem;
+            margin-bottom: 10px;
+            font-size: 1rem;
             text-align: center;
-            border-bottom: 1px solid #4361ee;
-            padding-bottom: 5px;
-        }
-
-        .section-subtitle {
-            text-align: center;
-            font-size: 0.8rem;
-            color: #8d99ae;
-            margin-top: -8px;
-            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
+        /* Hottest Display */
         .hottest-container {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
         }
         
         .hot-box {
-            background: linear-gradient(145deg, #ff4d00, #ff9100);
-            border-radius: 10px;
-            padding: 18px 12px;
-            min-width: 90px;
+            background: linear-gradient(145deg, #d00000, #ff4d00);
+            border-radius: 8px;
+            padding: 10px;
+            flex: 1;
+            max-width: 100px;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(255, 77, 0, 0.4);
-            border: 2px solid #fff;
+            box-shadow: 0 4px 10px rgba(208, 0, 0, 0.4);
+            border: 1px solid rgba(255,255,255,0.3);
         }
         
-        .ds-number {
-            font-size: 2.2rem;
-            font-weight: bold;
-            color: white;
-            margin-bottom: 3px;
-        }
-        
-        .ds-label {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.9);
-            font-weight: 600;
-            display: block;
-        }
+        .ds-number { font-size: 1.8rem; font-weight: bold; color: white; }
+        .ds-hits { font-size: 0.7rem; color: white; background: rgba(0,0,0,0.3); border-radius: 4px; padding: 2px; }
 
-        .ds-hits {
-            font-size: 0.75rem;
-            background: rgba(0,0,0,0.2);
-            border-radius: 4px;
-            padding: 2px 5px;
-            margin-top: 5px;
-            display: inline-block;
-        }
-        
         .remaining-container {
             display: flex;
             justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
+            gap: 8px;
         }
         
         .remaining-box {
-            background: rgba(27, 38, 59, 0.9);
-            border-radius: 8px;
-            padding: 12px 10px;
-            min-width: 75px;
-            text-align: center;
-            border: 2px solid #4361ee;
-        }
-        
-        .remaining-number {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #4cc9f0;
-        }
-        
-        .input-section {
-            background: rgba(13, 27, 42, 0.9);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
-            border: 2px solid #1b4965;
-        }
-        
-        .input-row {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        
-        .initial-input {
-            flex: 1;
-            padding: 12px;
-            border-radius: 8px;
-            border: 2px solid #4361ee;
             background: #1b263b;
-            color: white;
-            font-size: 1rem;
+            border-radius: 6px;
+            padding: 8px;
+            flex: 1;
+            max-width: 80px;
+            text-align: center;
+            border: 1px solid #4361ee;
         }
-        
-        .action-btn {
-            padding: 12px 20px;
+
+        /* Small Number Pad - 12 per row */
+        .number-pad {
+            background: #0d1b2a;
+            padding: 10px;
             border-radius: 8px;
-            border: none;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s;
-            font-size: 1rem;
+            margin-bottom: 15px;
         }
-        
-        .load-btn { background: #4361ee; color: white; }
-        .clear-btn { background: #f72585; color: white; }
-        
+
+        .zero-row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 5px;
+        }
+
         .number-grid {
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 8px;
+            grid-template-columns: repeat(12, 1fr); /* 12 per row */
+            gap: 4px;
         }
         
         .number-btn {
             aspect-ratio: 1;
-            font-size: 1.2rem;
+            font-size: 0.85rem;
             font-weight: bold;
             border: none;
-            border-radius: 8px;
+            border-radius: 4px;
             cursor: pointer;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .number-btn.zero { background: #38b000; width: 100%; max-width: 100px; height: 30px; }
+        .number-btn.even { background: #1b263b; border: 1px solid #4361ee; }
+        .number-btn.odd { background: #4361ee; }
+        .number-btn.clicked { background: #f72585; transform: scale(0.9); transition: 0.1s; }
+        
+        .input-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .initial-input {
+            flex: 1;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #4361ee;
+            background: #1b263b;
             color: white;
         }
         
-        .number-btn.zero { background: #7209b7; }
-        .number-btn.even { background: #3a0ca3; }
-        .number-btn.odd { background: #4361ee; }
-        .number-btn.clicked { background: #f72585; transform: scale(0.9); }
-        
+        .action-btn { padding: 8px 15px; border-radius: 5px; border: none; font-weight: bold; cursor: pointer; font-size: 0.8rem; }
+        .load-btn { background: #4361ee; color: white; }
+        .clear-btn { background: #f72585; color: white; }
+
         .history-list {
             background: rgba(27, 38, 59, 0.8);
-            border-radius: 8px;
-            padding: 12px;
-            max-height: 100px;
-            overflow-y: auto;
+            border-radius: 6px;
+            padding: 10px;
             display: flex;
-            flex-wrap: wrap-reverse;
-            gap: 8px;
+            flex-wrap: wrap;
+            gap: 5px;
+            min-height: 40px;
         }
         
         .history-item {
             background: #4361ee;
-            padding: 4px 8px;
-            border-radius: 4px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.8rem;
             font-weight: bold;
         }
 
-        .info-box {
-            background: rgba(13, 27, 42, 0.9);
-            padding: 15px;
-            margin-top: 15px;
-            border-radius: 12px;
-            border: 1px solid #1b4965;
-            font-size: 0.8rem;
-        }
-
-        @media (max-width: 480px) {
-            .number-grid { grid-template-columns: repeat(12, 1fr); }
-            .input-row { flex-direction: column; }
+        @media (max-width: 600px) {
+            .number-grid { grid-template-columns: repeat(6, 1fr); } /* 6 per row on mobile for readability */
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Hot Double Streets</h1>
-            <p class="subtitle">Based on last 36 spins</p>
+            <h1>DS Tracker</h1>
+            <p style="font-size: 0.8rem; color: #8d99ae; margin-bottom: 10px;">Rolling 36 Spin Analysis</p>
         </header>
         
         <div class="results-section">
-            <div class="section-title">TOP 3 HOTTEST</div>
-            <div class="section-subtitle">(Most frequent in last 36)</div>
-            <div class="hottest-container" id="hotContainer">
-                <div class="empty-state">Enter data...</div>
-            </div>
+            <div class="section-title">Hottest 3 (Last 36)</div>
+            <div class="hottest-container" id="hotContainer"></div>
             
-            <div class="section-title">REMAINING STREETS</div>
-            <div class="remaining-container" id="remainingContainer">
-                </div>
+            <div class="section-title">Others</div>
+            <div class="remaining-container" id="remainingContainer"></div>
+        </div>
+
+        <div class="number-pad">
+            <div class="zero-row">
+                <button class="number-btn zero" onclick="addNumber(0)">0</button>
+            </div>
+            <div class="number-grid" id="numberGrid"></div>
         </div>
         
         <div class="input-section">
             <div class="input-row">
-                <input type="text" id="initialInput" class="initial-input" placeholder="e.g. 12,5,23,0,31">
+                <input type="text" id="initialInput" class="initial-input" placeholder="Paste history: 1,5,20...">
                 <button id="loadInitialBtn" class="action-btn load-btn">Load</button>
                 <button id="clearBtn" class="action-btn clear-btn">Clear</button>
             </div>
-            <div class="number-grid" id="numberGrid"></div>
         </div>
 
         <div class="results-section">
-            <div class="section-title">Recent History</div>
+            <div class="section-title" style="border:none; font-size: 0.8rem;">Recent History</div>
             <div class="history-list" id="historyList"></div>
-        </div>
-
-        <div class="info-box">
-            <p><strong>Logic:</strong> Tracks frequency within a rolling window of 36 spins. DS1(1-6), DS2(7-12), DS3(13-18), DS4(19-24), DS5(25-30), DS6(31-36). Zero is ignored for DS tracking.</p>
         </div>
     </div>
 
@@ -272,12 +216,6 @@
 
         function initNumberGrid() {
             const grid = document.getElementById('numberGrid');
-            const zero = document.createElement('button');
-            zero.className = 'number-btn zero';
-            zero.textContent = '0';
-            zero.onclick = () => addNumber(0);
-            grid.appendChild(zero);
-
             for (let i = 1; i <= 36; i++) {
                 const btn = document.createElement('button');
                 btn.className = `number-btn ${i % 2 === 0 ? 'even' : 'odd'}`;
@@ -296,7 +234,7 @@
             btns.forEach(b => {
                 if(parseInt(b.textContent) === num) {
                     b.classList.add('clicked');
-                    setTimeout(() => b.classList.remove('clicked'), 200);
+                    setTimeout(() => b.classList.remove('clicked'), 150);
                 }
             });
         }
@@ -305,54 +243,37 @@
             return DOUBLE_STREETS.findIndex(range => range.includes(num)) + 1;
         }
 
-        function calculateHeat() {
-            // Get last 36 numbers
+        function updateUI() {
+            // Logic: Count hits in last 36
             const recent = history.slice(-36);
             const counts = { 1:0, 2:0, 3:0, 4:0, 5:0, 6:0 };
-            
             recent.forEach(n => {
                 const ds = getDS(n);
                 if(ds > 0) counts[ds]++;
             });
 
-            // Convert to array and sort by hits descending
             const sorted = Object.keys(counts).map(ds => ({
-                id: ds,
-                hits: counts[ds]
+                id: ds, hits: counts[ds]
             })).sort((a, b) => b.hits - a.hits || b.id - a.id);
 
-            return {
-                hot: sorted.slice(0, 3),
-                other: sorted.slice(3)
-            };
-        }
+            const hot = sorted.slice(0, 3);
+            const other = sorted.slice(3);
 
-        function updateUI() {
-            const stats = calculateHeat();
-            const hotCont = document.getElementById('hotContainer');
-            const remCont = document.getElementById('remainingContainer');
-            const histCont = document.getElementById('historyList');
-
-            // Update Hot
-            hotCont.innerHTML = stats.hot.map(item => `
+            document.getElementById('hotContainer').innerHTML = hot.map(item => `
                 <div class="hot-box">
-                    <span class="ds-label">DS</span>
                     <div class="ds-number">${item.id}</div>
                     <div class="ds-hits">${item.hits} Hits</div>
                 </div>
             `).join('');
 
-            // Update Others
-            remCont.innerHTML = stats.other.map(item => `
+            document.getElementById('remainingContainer').innerHTML = other.map(item => `
                 <div class="remaining-box">
-                    <div class="remaining-number">${item.id}</div>
-                    <div class="ds-hits">${item.hits} Hits</div>
+                    <div style="font-weight:bold; color:#4cc9f0">DS ${item.id}</div>
+                    <div style="font-size:0.7rem">${item.hits} Hits</div>
                 </div>
             `).join('');
 
-            // Update History
-            histCont.innerHTML = history.slice(-20).map(n => `<div class="history-item">${n}</div>`).join('');
-            histCont.scrollTop = 0;
+            document.getElementById('historyList').innerHTML = history.slice(-24).map(n => `<div class="history-item">${n}</div>`).join('');
         }
 
         document.getElementById('loadInitialBtn').onclick = () => {
@@ -370,12 +291,7 @@
             updateUI();
         };
 
-        window.onload = () => {
-            initNumberGrid();
-            // Optional: Start with some dummy data
-            history = [1,2,3,4,5,10,11,12,31,32,33,34];
-            updateUI();
-        };
+        window.onload = initNumberGrid;
     </script>
 </body>
 </html>
