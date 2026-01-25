@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Double Streets Tracker</title>
+    <title>Double Streets Heat Tracker</title>
     <style>
         * {
             margin: 0;
@@ -60,22 +60,31 @@
             border-bottom: 1px solid #4361ee;
             padding-bottom: 5px;
         }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #8d99ae;
+            margin-top: -8px;
+            margin-bottom: 15px;
+        }
         
-        .missing-container {
+        .hottest-container {
             display: flex;
             justify-content: center;
             gap: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             flex-wrap: wrap;
         }
         
-        .missing-box {
-            background: linear-gradient(145deg, #f72585, #b5179e);
+        .hot-box {
+            background: linear-gradient(145deg, #ff4d00, #ff9100);
             border-radius: 10px;
             padding: 18px 12px;
-            min-width: 85px;
+            min-width: 90px;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(247, 37, 133, 0.4);
+            box-shadow: 0 5px 15px rgba(255, 77, 0, 0.4);
+            border: 2px solid #fff;
         }
         
         .ds-number {
@@ -86,9 +95,19 @@
         }
         
         .ds-label {
-            font-size: 0.95rem;
-            color: rgba(255, 255, 255, 0.95);
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.9);
             font-weight: 600;
+            display: block;
+        }
+
+        .ds-hits {
+            font-size: 0.75rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+            padding: 2px 5px;
+            margin-top: 5px;
+            display: inline-block;
         }
         
         .remaining-container {
@@ -101,22 +120,16 @@
         .remaining-box {
             background: rgba(27, 38, 59, 0.9);
             border-radius: 8px;
-            padding: 15px 10px;
-            min-width: 70px;
+            padding: 12px 10px;
+            min-width: 75px;
             text-align: center;
             border: 2px solid #4361ee;
         }
         
         .remaining-number {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: bold;
             color: #4cc9f0;
-            margin-bottom: 3px;
-        }
-        
-        .remaining-label {
-            font-size: 0.85rem;
-            color: #b8c1ec;
         }
         
         .input-section {
@@ -151,30 +164,10 @@
             cursor: pointer;
             transition: transform 0.2s;
             font-size: 1rem;
-            white-space: nowrap;
         }
         
-        .action-btn:active {
-            transform: scale(0.95);
-        }
-        
-        .load-btn {
-            background: #4361ee;
-            color: white;
-        }
-        
-        .clear-btn {
-            background: #f72585;
-            color: white;
-        }
-        
-        .number-pad {
-            background: rgba(13, 27, 42, 0.9);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
-            border: 2px solid #1b4965;
-        }
+        .load-btn { background: #4361ee; color: white; }
+        .clear-btn { background: #f72585; color: white; }
         
         .number-grid {
             display: grid;
@@ -189,455 +182,200 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             color: white;
         }
         
-        .number-btn:active {
-            transform: scale(0.9);
-        }
-        
-        .number-btn.zero {
-            background: #7209b7;
-        }
-        
-        .number-btn.even {
-            background: #3a0ca3;
-        }
-        
-        .number-btn.odd {
-            background: #4361ee;
-        }
-        
-        .number-btn.clicked {
-            background: #f72585;
-        }
-        
-        .history-section {
-            background: rgba(13, 27, 42, 0.9);
-            border-radius: 12px;
-            padding: 15px;
-            border: 2px solid #1b4965;
-        }
+        .number-btn.zero { background: #7209b7; }
+        .number-btn.even { background: #3a0ca3; }
+        .number-btn.odd { background: #4361ee; }
+        .number-btn.clicked { background: #f72585; transform: scale(0.9); }
         
         .history-list {
             background: rgba(27, 38, 59, 0.8);
             border-radius: 8px;
             padding: 12px;
-            min-height: 60px;
-            max-height: 120px;
+            max-height: 100px;
             overflow-y: auto;
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: wrap-reverse;
             gap: 8px;
         }
         
         .history-item {
             background: #4361ee;
-            padding: 6px 10px;
-            border-radius: 6px;
+            padding: 4px 8px;
+            border-radius: 4px;
             font-weight: bold;
-            font-size: 0.9rem;
         }
-        
-        .empty-state {
-            text-align: center;
-            color: #8d99ae;
-            font-style: italic;
-            padding: 20px;
-            width: 100%;
-        }
-        
+
         .info-box {
             background: rgba(13, 27, 42, 0.9);
-            border-radius: 12px;
             padding: 15px;
             margin-top: 15px;
-            border: 2px solid #1b4965;
-            font-size: 0.85rem;
-            line-height: 1.4;
-        }
-        
-        .info-title {
-            color: #72efdd;
-            margin-bottom: 8px;
-            font-size: 1rem;
-        }
-        
-        .ds-explanation {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 10px;
-        }
-        
-        .ds-item {
-            background: rgba(27, 38, 59, 0.8);
-            padding: 8px;
-            border-radius: 6px;
+            border-radius: 12px;
+            border: 1px solid #1b4965;
             font-size: 0.8rem;
-            text-align: center;
         }
-        
-        .ds-name {
-            color: #4cc9f0;
-            font-weight: bold;
-        }
-        
-        .ds-range {
-            color: #b8c1ec;
-        }
-        
-        @media (min-width: 768px) {
-            .container {
-                max-width: 768px;
-                margin: 0 auto;
-            }
-            
-            .number-grid {
-                grid-template-columns: repeat(12, 1fr);
-                gap: 10px;
-            }
-            
-            .ds-explanation {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-        
+
         @media (max-width: 480px) {
-            .number-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-            
-            .missing-box {
-                min-width: 70px;
-                padding: 15px 8px;
-            }
-            
-            .ds-number {
-                font-size: 1.8rem;
-            }
-            
-            .remaining-box {
-                min-width: 60px;
-                padding: 12px 8px;
-            }
-            
-            .remaining-number {
-                font-size: 1.5rem;
-            }
-            
-            .input-row {
-                flex-direction: column;
-            }
+            .number-grid { grid-template-columns: repeat(4, 1fr); }
+            .input-row { flex-direction: column; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Double Streets Tracker</h1>
-            <p class="subtitle">Click numbers (0-36) to see missing double streets</p>
+            <h1>Hot Double Streets</h1>
+            <p class="subtitle">Based on last 36 spins</p>
         </header>
         
         <div class="results-section">
-            <div class="section-title">Missing Double Streets</div>
-            <div class="missing-container" id="missingContainer">
-                <div class="empty-state">Click numbers to see results</div>
+            <div class="section-title">TOP 3 HOTTEST</div>
+            <div class="section-subtitle">(Most frequent in last 36)</div>
+            <div class="hottest-container" id="hotContainer">
+                <div class="empty-state">Enter data...</div>
             </div>
             
-            <div class="section-title">Remaining Double Streets</div>
+            <div class="section-title">REMAINING STREETS</div>
             <div class="remaining-container" id="remainingContainer">
-                <div class="empty-state">Results will appear here</div>
-            </div>
+                </div>
         </div>
         
         <div class="input-section">
             <div class="input-row">
-                <input type="text" id="initialInput" class="initial-input" placeholder="Enter numbers: 12,5,23,0,31">
+                <input type="text" id="initialInput" class="initial-input" placeholder="e.g. 12,5,23,0,31">
                 <button id="loadInitialBtn" class="action-btn load-btn">Load</button>
                 <button id="clearBtn" class="action-btn clear-btn">Clear</button>
             </div>
+            <div class="number-grid" id="numberGrid"></div>
         </div>
-        
-        <div class="number-pad">
-            <div class="section-title">Click Numbers</div>
-            <div class="number-grid" id="numberGrid">
-                <!-- Numbers will be generated by JavaScript -->
-            </div>
+
+        <div class="results-section">
+            <div class="section-title">Recent History</div>
+            <div class="history-list" id="historyList"></div>
         </div>
-        
-        <div class="history-section">
-            <div class="section-title">Number History</div>
-            <div class="history-list" id="historyList">
-                <div class="empty-state">No numbers entered yet</div>
-            </div>
-        </div>
-        
+
         <div class="info-box">
-            <div class="info-title">Double Streets Info</div>
-            <p>DS1: 1-6, DS2: 7-12, DS3: 13-18, DS4: 19-24, DS5: 25-30, DS6: 31-36</p>
-            <p>The tool shows the 3 double streets that have been missing the longest.</p>
+            <p><strong>Logic:</strong> Tracks frequency within a rolling window of 36 spins. DS1(1-6), DS2(7-12), DS3(13-18), DS4(19-24), DS5(25-30), DS6(31-36). Zero is ignored for DS tracking.</p>
         </div>
     </div>
 
     <script>
-        // Double streets definition
         const DOUBLE_STREETS = [
-            [1, 2, 3, 4, 5, 6],         // DS1
-            [7, 8, 9, 10, 11, 12],      // DS2
-            [13, 14, 15, 16, 17, 18],   // DS3
-            [19, 20, 21, 22, 23, 24],   // DS4
-            [25, 26, 27, 28, 29, 30],   // DS5
-            [31, 32, 33, 34, 35, 36]    // DS6
+            [1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12],
+            [13, 14, 15, 16, 17, 18], [19, 20, 21, 22, 23, 24],
+            [25, 26, 27, 28, 29, 30], [31, 32, 33, 34, 35, 36]
         ];
 
-        // Store number history
         let history = [];
 
-        // Initialize the number grid
         function initNumberGrid() {
-            const numberGrid = document.getElementById('numberGrid');
-            numberGrid.innerHTML = '';
-            
-            // Create button for 0
-            const zeroButton = document.createElement('button');
-            zeroButton.className = 'number-btn zero';
-            zeroButton.textContent = '0';
-            zeroButton.addEventListener('click', () => addNumber(0));
-            numberGrid.appendChild(zeroButton);
-            
-            // Create buttons for 1-36
+            const grid = document.getElementById('numberGrid');
+            const zero = document.createElement('button');
+            zero.className = 'number-btn zero';
+            zero.textContent = '0';
+            zero.onclick = () => addNumber(0);
+            grid.appendChild(zero);
+
             for (let i = 1; i <= 36; i++) {
-                const button = document.createElement('button');
-                button.className = `number-btn ${i % 2 === 0 ? 'even' : 'odd'}`;
-                button.textContent = i;
-                button.addEventListener('click', () => addNumber(i));
-                numberGrid.appendChild(button);
+                const btn = document.createElement('button');
+                btn.className = `number-btn ${i % 2 === 0 ? 'even' : 'odd'}`;
+                btn.textContent = i;
+                btn.onclick = () => addNumber(i);
+                grid.appendChild(btn);
             }
         }
 
-        // Add a number to history and update results
-        function addNumber(number) {
-            history.push(number);
-            updateHistoryDisplay();
-            updateResults();
+        function addNumber(num) {
+            history.push(num);
+            updateUI();
             
-            // Visual feedback for clicked button
-            const buttons = document.querySelectorAll('.number-btn');
-            buttons.forEach(btn => {
-                if (parseInt(btn.textContent) === number) {
-                    btn.classList.add('clicked');
-                    setTimeout(() => btn.classList.remove('clicked'), 300);
+            // Visual tap feedback
+            const btns = document.querySelectorAll('.number-btn');
+            btns.forEach(b => {
+                if(parseInt(b.textContent) === num) {
+                    b.classList.add('clicked');
+                    setTimeout(() => b.classList.remove('clicked'), 200);
                 }
             });
         }
 
-        // Load initial numbers from input
-        function loadInitialNumbers() {
-            const input = document.getElementById('initialInput').value;
-            if (!input.trim()) return;
+        function getDS(num) {
+            return DOUBLE_STREETS.findIndex(range => range.includes(num)) + 1;
+        }
+
+        function calculateHeat() {
+            // Get last 36 numbers
+            const recent = history.slice(-36);
+            const counts = { 1:0, 2:0, 3:0, 4:0, 5:0, 6:0 };
             
-            const numbers = input.split(',');
-            history = [];
-            
-            numbers.forEach(numStr => {
-                const num = parseInt(numStr.trim());
-                if (!isNaN(num) && num >= 0 && num <= 36) {
-                    history.push(num);
-                }
+            recent.forEach(n => {
+                const ds = getDS(n);
+                if(ds > 0) counts[ds]++;
             });
-            
-            updateHistoryDisplay();
-            updateResults();
+
+            // Convert to array and sort by hits descending
+            const sorted = Object.keys(counts).map(ds => ({
+                id: ds,
+                hits: counts[ds]
+            })).sort((a, b) => b.hits - a.hits || b.id - a.id);
+
+            return {
+                hot: sorted.slice(0, 3),
+                other: sorted.slice(3)
+            };
+        }
+
+        function updateUI() {
+            const stats = calculateHeat();
+            const hotCont = document.getElementById('hotContainer');
+            const remCont = document.getElementById('remainingContainer');
+            const histCont = document.getElementById('historyList');
+
+            // Update Hot
+            hotCont.innerHTML = stats.hot.map(item => `
+                <div class="hot-box">
+                    <span class="ds-label">DS</span>
+                    <div class="ds-number">${item.id}</div>
+                    <div class="ds-hits">${item.hits} Hits</div>
+                </div>
+            `).join('');
+
+            // Update Others
+            remCont.innerHTML = stats.other.map(item => `
+                <div class="remaining-box">
+                    <div class="remaining-number">${item.id}</div>
+                    <div class="ds-hits">${item.hits} Hits</div>
+                </div>
+            `).join('');
+
+            // Update History
+            histCont.innerHTML = history.slice(-20).map(n => `<div class="history-item">${n}</div>`).join('');
+            histCont.scrollTop = 0;
+        }
+
+        document.getElementById('loadInitialBtn').onclick = () => {
+            const val = document.getElementById('initialInput').value;
+            val.split(',').forEach(v => {
+                const n = parseInt(v.trim());
+                if(!isNaN(n) && n >= 0 && n <= 36) history.push(n);
+            });
+            updateUI();
             document.getElementById('initialInput').value = '';
-        }
+        };
 
-        // Update the history display
-        function updateHistoryDisplay() {
-            const historyList = document.getElementById('historyList');
-            
-            if (history.length === 0) {
-                historyList.innerHTML = '<div class="empty-state">No numbers entered yet</div>';
-                return;
-            }
-            
-            let historyHTML = '';
-            history.forEach((num, index) => {
-                historyHTML += `<div class="history-item">${num}</div>`;
-            });
-            
-            historyList.innerHTML = historyHTML;
-            historyList.scrollTop = historyList.scrollHeight;
-        }
-
-        // Get double street index for a number
-        function getDSIndex(number) {
-            for (let ds = 0; ds < 6; ds++) {
-                if (DOUBLE_STREETS[ds].includes(number)) {
-                    return ds;
-                }
-            }
-            return -1; // For 0 or invalid numbers
-        }
-
-        // Find the 3 double streets missing the longest
-        function findMissingDoubleStreets() {
-            if (history.length === 0) {
-                return { missing: [], remaining: [0, 1, 2, 3, 4, 5] };
-            }
-            
-            // Initialize last seen indices with -1 (not seen)
-            let lastSeenDS = Array(6).fill(-1);
-            
-            // Go through history from latest to earliest
-            for (let i = history.length - 1; i >= 0; i--) {
-                const num = history[i];
-                const dsIndex = getDSIndex(num);
-                
-                // If we haven't seen this DS yet, mark when we saw it
-                if (dsIndex !== -1 && lastSeenDS[dsIndex] === -1) {
-                    lastSeenDS[dsIndex] = i;
-                }
-                
-                // Stop if we found at least 3 DS that have been seen
-                let seenCount = 0;
-                for (let j = 0; j < 6; j++) {
-                    if (lastSeenDS[j] !== -1) seenCount++;
-                }
-                
-                if (seenCount >= 3) break;
-            }
-            
-            // Find missing double streets (those with lastSeenDS = -1)
-            let missingDS = [];
-            for (let ds = 0; ds < 6; ds++) {
-                if (lastSeenDS[ds] === -1) {
-                    missingDS.push(ds);
-                }
-            }
-            
-            // Always show exactly 3 double streets
-            if (missingDS.length > 3) {
-                missingDS = missingDS.slice(0, 3);
-            } else if (missingDS.length < 3) {
-                // Create array of DS indices with their last seen position
-                let dsWithPositions = [];
-                for (let ds = 0; ds < 6; ds++) {
-                    dsWithPositions.push({ ds, position: lastSeenDS[ds] });
-                }
-                
-                // Sort by position (ascending, -1 first, then oldest positions)
-                dsWithPositions.sort((a, b) => a.position - b.position);
-                
-                // Take the first 3 that are not already in missingDS
-                for (let i = 0; i < dsWithPositions.length && missingDS.length < 3; i++) {
-                    const ds = dsWithPositions[i].ds;
-                    if (!missingDS.includes(ds)) {
-                        missingDS.push(ds);
-                    }
-                }
-            }
-            
-            // Find remaining double streets (all except the missing ones)
-            let remainingDS = [];
-            for (let ds = 0; ds < 6; ds++) {
-                if (!missingDS.includes(ds)) {
-                    remainingDS.push(ds);
-                }
-            }
-            
-            // Sort missing DS in ascending order
-            missingDS.sort((a, b) => a - b);
-            
-            return { missing: missingDS, remaining: remainingDS };
-        }
-
-        // Format ordinal numbers (1st, 2nd, 3rd, etc.)
-        function getOrdinal(n) {
-            const suffixes = ["th", "st", "nd", "rd"];
-            const v = n % 100;
-            return n + (suffixes[(v-20) % 10] || suffixes[v] || suffixes[0]);
-        }
-
-        // Update the results display
-        function updateResults() {
-            const result = findMissingDoubleStreets();
-            const missingContainer = document.getElementById('missingContainer');
-            const remainingContainer = document.getElementById('remainingContainer');
-            
-            // Display missing double streets
-            if (result.missing.length === 0) {
-                missingContainer.innerHTML = '<div class="empty-state">No missing double streets</div>';
-            } else {
-                let missingHTML = '';
-                result.missing.forEach(dsIndex => {
-                    const ordinal = getOrdinal(dsIndex + 1);
-                    missingHTML += `
-                        <div class="missing-box">
-                            <div class="ds-number">${dsIndex + 1}</div>
-                            <div class="ds-label">${ordinal}</div>
-                        </div>
-                    `;
-                });
-                missingContainer.innerHTML = missingHTML;
-            }
-            
-            // Display remaining double streets
-            if (result.remaining.length === 0) {
-                remainingContainer.innerHTML = '<div class="empty-state">No remaining double streets</div>';
-            } else {
-                let remainingHTML = '';
-                result.remaining.forEach(dsIndex => {
-                    const ordinal = getOrdinal(dsIndex + 1);
-                    
-                    remainingHTML += `
-                        <div class="remaining-box">
-                            <div class="remaining-number">${dsIndex + 1}</div>
-                            <div class="remaining-label">${ordinal}</div>
-                        </div>
-                    `;
-                });
-                remainingContainer.innerHTML = remainingHTML;
-            }
-        }
-
-        // Clear all history and results
-        function clearAll() {
+        document.getElementById('clearBtn').onclick = () => {
             history = [];
-            updateHistoryDisplay();
-            updateResults();
-            document.getElementById('initialInput').value = '';
-        }
+            updateUI();
+        };
 
-        // Initialize the application
-        function init() {
+        window.onload = () => {
             initNumberGrid();
-            
-            // Set up event listeners
-            document.getElementById('loadInitialBtn').addEventListener('click', loadInitialNumbers);
-            document.getElementById('clearBtn').addEventListener('click', clearAll);
-            
-            // Allow Enter key to load initial numbers
-            document.getElementById('initialInput').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    loadInitialNumbers();
-                }
-            });
-            
-            // Load sample data for demonstration
-            setTimeout(() => {
-                history = [12, 5, 23, 31, 17, 8, 14, 36, 2];
-                updateHistoryDisplay();
-                updateResults();
-            }, 300);
-        }
-
-        // Initialize when page loads
-        document.addEventListener('DOMContentLoaded', init);
+            // Optional: Start with some dummy data
+            history = [1,2,3,4,5,10,11,12,31,32,33,34];
+            updateUI();
+        };
     </script>
 </body>
 </html>
