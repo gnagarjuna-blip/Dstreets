@@ -3,36 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Double Streets Heat Tracker</title>
+    <title>Double Streets Heat Tracker - Pro</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-        }
+        /* Existing Styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background: #0d1b2a; color: #e0e1dd; min-height: 100vh; padding: 10px; }
         
-        body {
-            background: #0d1b2a;
-            color: #e0e1dd;
-            min-height: 100vh;
-            padding: 10px;
-        }
-        
-        .container {
-            max-width: 800px;
+        /* New Layout: Sidebars */
+        .main-layout {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            max-width: 1200px;
             margin: 0 auto;
         }
-        
-        header {
-            text-align: center;
-            padding: 10px 0;
+
+        .side-stats {
+            width: 120px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-top: 50px;
         }
+
+        .container { flex: 1; max-width: 600px; }
         
-        h1 {
-            font-size: 1.5rem;
-            color: #4cc9f0;
-        }
+        header { text-align: center; padding: 10px 0; }
+        h1 { font-size: 1.5rem; color: #4cc9f0; }
         
         .results-section {
             background: rgba(13, 27, 42, 0.9);
@@ -45,163 +42,110 @@
         .section-title {
             color: #72efdd;
             margin-bottom: 10px;
-            font-size: 1rem;
+            font-size: 0.9rem;
             text-align: center;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
         
-        /* Hottest Display */
-        .hottest-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
+        /* Vertical Stat Boxes */
+        .v-box {
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
         }
-        
+        .v-hot { background: linear-gradient(180deg, #d00000, #9d0208); box-shadow: -4px 0 10px rgba(208, 0, 0, 0.3); }
+        .v-cold { background: linear-gradient(180deg, #023e8a, #03045e); box-shadow: 4px 0 10px rgba(2, 62, 138, 0.3); }
+        .v-num { font-size: 1.5rem; font-weight: bold; display: block; }
+        .v-label { font-size: 0.6rem; text-transform: uppercase; opacity: 0.8; }
+
+        /* Rolling 36 UI */
+        .hottest-container { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
         .hot-box {
             background: linear-gradient(145deg, #d00000, #ff4d00);
-            border-radius: 8px;
-            padding: 10px;
-            flex: 1;
-            max-width: 100px;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(208, 0, 0, 0.4);
-            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 8px; padding: 10px; flex: 1; max-width: 100px; text-align: center;
+            box-shadow: 0 4px 10px rgba(208, 0, 0, 0.4); border: 1px solid rgba(255,255,255,0.3);
         }
-        
         .ds-number { font-size: 1.8rem; font-weight: bold; color: white; }
         .ds-hits { font-size: 0.7rem; color: white; background: rgba(0,0,0,0.3); border-radius: 4px; padding: 2px; }
 
-        .remaining-container {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-        }
-        
-        .remaining-box {
-            background: #1b263b;
-            border-radius: 6px;
-            padding: 8px;
-            flex: 1;
-            max-width: 80px;
-            text-align: center;
-            border: 1px solid #4361ee;
-        }
+        .remaining-container { display: flex; justify-content: center; gap: 8px; }
+        .remaining-box { background: #1b263b; border-radius: 6px; padding: 8px; flex: 1; text-align: center; border: 1px solid #4361ee; }
 
-        /* Small Number Pad - 12 per row */
-        .number-pad {
-            background: #0d1b2a;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-
-        .zero-row {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 5px;
-        }
-
-        .number-grid {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr); /* 12 per row */
-            gap: 4px;
-        }
-        
+        /* Number Pad */
+        .number-pad { background: #0d1b2a; padding: 10px; border-radius: 8px; margin-bottom: 15px; }
+        .zero-row { display: flex; justify-content: center; margin-bottom: 5px; }
+        .number-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; }
         .number-btn {
-            aspect-ratio: 1;
-            font-size: 0.85rem;
-            font-weight: bold;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            aspect-ratio: 1; font-size: 0.85rem; font-weight: bold; border: none; border-radius: 4px;
+            cursor: pointer; color: white; display: flex; align-items: center; justify-content: center;
         }
-        
         .number-btn.zero { background: #38b000; width: 100%; max-width: 100px; height: 30px; }
         .number-btn.even { background: #1b263b; border: 1px solid #4361ee; }
         .number-btn.odd { background: #4361ee; }
         .number-btn.clicked { background: #f72585; transform: scale(0.9); transition: 0.1s; }
         
-        .input-row {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 10px;
-        }
-        
-        .initial-input {
-            flex: 1;
-            padding: 8px;
-            border-radius: 5px;
-            border: 1px solid #4361ee;
-            background: #1b263b;
-            color: white;
-        }
-        
+        .input-row { display: flex; gap: 8px; margin-bottom: 10px; }
+        .initial-input { flex: 1; padding: 8px; border-radius: 5px; border: 1px solid #4361ee; background: #1b263b; color: white; }
         .action-btn { padding: 8px 15px; border-radius: 5px; border: none; font-weight: bold; cursor: pointer; font-size: 0.8rem; }
         .load-btn { background: #4361ee; color: white; }
         .clear-btn { background: #f72585; color: white; }
 
-        .history-list {
-            background: rgba(27, 38, 59, 0.8);
-            border-radius: 6px;
-            padding: 10px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            min-height: 40px;
-        }
-        
-        .history-item {
-            background: #4361ee;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
+        .history-list { background: rgba(27, 38, 59, 0.8); border-radius: 6px; padding: 10px; display: flex; flex-wrap: wrap; gap: 5px; min-height: 40px; }
+        .history-item { background: #4361ee; padding: 2px 6px; border-radius: 3px; font-size: 0.8rem; font-weight: bold; }
 
-        @media (max-width: 600px) {
-            .number-grid { grid-template-columns: repeat(6, 1fr); } /* 6 per row on mobile for readability */
+        @media (max-width: 800px) {
+            .main-layout { flex-direction: column; align-items: center; }
+            .side-stats { flex-direction: row; width: 100%; justify-content: center; padding-top: 0; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>DS Tracker</h1>
-            <p style="font-size: 0.8rem; color: #8d99ae; margin-bottom: 10px;">Rolling 36 Spin Analysis</p>
-        </header>
-        
-        <div class="results-section">
-            <div class="section-title">Hottest 3 (Last 36)</div>
-            <div class="hottest-container" id="hotContainer"></div>
+    <div class="main-layout">
+        <div class="side-stats" id="leftStats">
+            <div class="section-title">Session Hot</div>
+            <div id="allTimeHot"></div>
+        </div>
+
+        <div class="container">
+            <header>
+                <h1>DS Tracker</h1>
+                <p style="font-size: 0.8rem; color: #8d99ae; margin-bottom: 10px;">Rolling 36 Spin Analysis</p>
+            </header>
             
-            <div class="section-title">Others</div>
-            <div class="remaining-container" id="remainingContainer"></div>
+            <div class="results-section">
+                <div class="section-title">Hottest 3 (Last 36)</div>
+                <div class="hottest-container" id="hotContainer"></div>
+                <div class="section-title">Others</div>
+                <div class="remaining-container" id="remainingContainer"></div>
+            </div>
+
+            <div class="number-pad">
+                <div class="zero-row">
+                    <button class="number-btn zero" onclick="addNumber(0)">0</button>
+                </div>
+                <div class="number-grid" id="numberGrid"></div>
+            </div>
+            
+            <div class="input-section">
+                <div class="input-row">
+                    <input type="text" id="initialInput" class="initial-input" placeholder="Paste history: 1,5,20...">
+                    <button id="loadInitialBtn" class="action-btn load-btn">Load</button>
+                    <button id="clearBtn" class="action-btn clear-btn">Clear</button>
+                </div>
+            </div>
+
+            <div class="results-section">
+                <div class="section-title" style="border:none; font-size: 0.8rem;">Recent History</div>
+                <div class="history-list" id="historyList"></div>
+            </div>
         </div>
 
-        <div class="number-pad">
-            <div class="zero-row">
-                <button class="number-btn zero" onclick="addNumber(0)">0</button>
-            </div>
-            <div class="number-grid" id="numberGrid"></div>
-        </div>
-        
-        <div class="input-section">
-            <div class="input-row">
-                <input type="text" id="initialInput" class="initial-input" placeholder="Paste history: 1,5,20...">
-                <button id="loadInitialBtn" class="action-btn load-btn">Load</button>
-                <button id="clearBtn" class="action-btn clear-btn">Clear</button>
-            </div>
-        </div>
-
-        <div class="results-section">
-            <div class="section-title" style="border:none; font-size: 0.8rem;">Recent History</div>
-            <div class="history-list" id="historyList"></div>
+        <div class="side-stats" id="rightStats">
+            <div class="section-title">Session Cold</div>
+            <div id="allTimeCold"></div>
         </div>
     </div>
 
@@ -229,7 +173,6 @@
             history.push(num);
             updateUI();
             
-            // Visual tap feedback
             const btns = document.querySelectorAll('.number-btn');
             btns.forEach(b => {
                 if(parseInt(b.textContent) === num) {
@@ -244,20 +187,32 @@
         }
 
         function updateUI() {
-            // Logic: Count hits in last 36
+            // 1. ROLLING 36 CALCULATION
             const recent = history.slice(-36);
-            const counts = { 1:0, 2:0, 3:0, 4:0, 5:0, 6:0 };
+            const recentCounts = { 1:0, 2:0, 3:0, 4:0, 5:0, 6:0 };
             recent.forEach(n => {
                 const ds = getDS(n);
-                if(ds > 0) counts[ds]++;
+                if(ds > 0) recentCounts[ds]++;
             });
 
-            const sorted = Object.keys(counts).map(ds => ({
-                id: ds, hits: counts[ds]
+            const recentSorted = Object.keys(recentCounts).map(ds => ({
+                id: ds, hits: recentCounts[ds]
             })).sort((a, b) => b.hits - a.hits || b.id - a.id);
 
-            const hot = sorted.slice(0, 3);
-            const other = sorted.slice(3);
+            // 2. ENTIRE HISTORY CALCULATION (for Sidebars)
+            const totalCounts = { 1:0, 2:0, 3:0, 4:0, 5:0, 6:0 };
+            history.forEach(n => {
+                const ds = getDS(n);
+                if(ds > 0) totalCounts[ds]++;
+            });
+
+            const totalSorted = Object.keys(totalCounts).map(ds => ({
+                id: ds, hits: totalCounts[ds]
+            })).sort((a, b) => b.hits - a.hits || b.id - a.id);
+
+            // RENDER ROLLING 36
+            const hot = recentSorted.slice(0, 3);
+            const other = recentSorted.slice(3);
 
             document.getElementById('hotContainer').innerHTML = hot.map(item => `
                 <div class="hot-box">
@@ -270,6 +225,26 @@
                 <div class="remaining-box">
                     <div style="font-weight:bold; color:#4cc9f0">DS ${item.id}</div>
                     <div style="font-size:0.7rem">${item.hits} Hits</div>
+                </div>
+            `).join('');
+
+            // RENDER SIDEBARS (ALL TIME)
+            const sessionHot = [...totalSorted].slice(0, 3);
+            const sessionCold = [...totalSorted].reverse().slice(0, 3);
+
+            document.getElementById('allTimeHot').innerHTML = sessionHot.map(item => `
+                <div class="v-box v-hot">
+                    <span class="v-label">DS</span>
+                    <span class="v-num">${item.id}</span>
+                    <span class="v-label">${item.hits} Total</span>
+                </div>
+            `).join('');
+
+            document.getElementById('allTimeCold').innerHTML = sessionCold.map(item => `
+                <div class="v-box v-cold">
+                    <span class="v-label">DS</span>
+                    <span class="v-num">${item.id}</span>
+                    <span class="v-label">${item.hits} Total</span>
                 </div>
             `).join('');
 
